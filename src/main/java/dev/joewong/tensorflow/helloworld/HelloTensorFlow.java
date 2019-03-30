@@ -166,6 +166,34 @@ public class HelloTensorFlow {
         Ops.add(graph, "weight_hidden_output_update", hiddenOutputWeightOutput, deltaHiddenOutputWeightUpdateCalc);
     }
 
+    public void run() {
+        Float[][] inputs = XorDataSet.getDataSet();
+        Float[] input;
+        Float expected;
+
+        for (int i = 0; i<EPOCHS; i++) {
+            Collections.shuffle(Arrays.asList(inputs));
+            for (int j=0; j<inputs.length; j++) {
+                input = inputs[j];
+                float[] row = {input[0], input[1]};
+                expected = input[2];
+
+                System.out.println("================");
+                System.out.println("EPOCH: " + i);
+                System.out.println("Data set item: " + j);
+                System.out.println("================");
+
+                System.out.println("\nInput:");
+                System.out.println(displayFloatValues.displayString(row));
+
+                System.out.println("\nExpected:");
+                System.out.println(displayFloatValues.displayString(expected));
+
+                displayGraphRun(runGraph(row, expected));
+            }
+        }
+    }
+
     private List<Tensor<?>> runGraph(float[] trainRowValues,float expectedValues) {
         return session.runner()
         .feed(inputOutput, Tensor.create(trainRowValues))
@@ -202,33 +230,5 @@ public class HelloTensorFlow {
         t.get(8).copyTo(hiddenOutputWeightValues);
         System.out.println("Prediction: ");
         System.out.println(displayFloatValues.displayString(predictionValues) + "\n");
-    }
-    
-    public void run() {
-        Float[][] inputs = XorDataSet.getDataSet();
-        Float[] input;
-        Float expected;
-
-        for (int i = 0; i<EPOCHS; i++) {
-            Collections.shuffle(Arrays.asList(inputs));
-            for (int j=0; j<inputs.length; j++) {
-                input = inputs[j];
-                float[] row = {input[0], input[1]};
-                expected = input[2];
-
-                System.out.println("================");
-                System.out.println("EPOCH: " + i);
-                System.out.println("Data set item: " + j);
-                System.out.println("================");
-
-                System.out.println("\nInput:");
-                System.out.println(displayFloatValues.displayString(row));
-
-                System.out.println("\nExpected:");
-                System.out.println(displayFloatValues.displayString(expected));
-
-                displayGraphRun(runGraph(row, expected));
-            }
-        }
     }
 }

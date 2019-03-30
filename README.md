@@ -1,5 +1,5 @@
 # TensorFlow Helloworld
-This example project trains a neural network against the XOR function.
+This example project trains a neural network on the XOR function.
 
 # Pre-requisites
 Java 8 is required to build and run the application.
